@@ -19,39 +19,122 @@ class WhatsappCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey, // Set the key for the scaffold
       appBar: _buildAppBar(),
-      body: buildMainContent(),
       drawer: buildDrawer(context),
+      body: buildMainContent(), // Ensure body is included
     );
   }
 
   Widget buildMainContent() {
     return Container(
-      height: double.infinity,
-      width: double.infinity,
       decoration: BoxDecoration(
-          gradient: LinearGradient(
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-        colors: [
-          AppColors.primaryColor.withOpacity(0),
-          AppColors.backgroundColor.withOpacity(0.7),
-        ],
-      )),
-      child: Center(
-        child: buildMainCard(),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            AppColors.primaryColor.withOpacity(0),
+            AppColors.backgroundColor.withOpacity(0.5),
+          ],
+        ),
       ),
+      child: Column(children: [
+        const SizedBox(
+          height: 30,
+        ),
+        buildMainCard(),
+        const Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "Share Via Whatsapp ",
+              style: TextStyle(
+                fontSize: 20,
+              ),
+            ),
+            Icon(Icons.ios_share)
+          ],
+        )
+      ]),
     );
   }
 
-  Widget buildMainCard(){
+  Widget buildMainCard() {
     return Container(
+      constraints: const BoxConstraints(maxHeight: 320),
+      alignment: Alignment.center,
+      margin: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(30),
       decoration: BoxDecoration(
-        color:
+        color: const Color(0xFF212f31),
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min, // Ensure only required space is taken
+        children: [
+          _buildLogo(),
+          const Text(
+            "Whatsapp",
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 25,
+            ),
+          ),
+          const SizedBox(height: 20),
+          _buildOrderConfirmedRow(),
+        ],
       ),
     );
   }
 
+  Widget _buildLogo() {
+    return Container(
+      padding: const EdgeInsets.all(30),
+      alignment: Alignment.center,
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        shape: BoxShape.circle,
+      ),
+      child: Image.asset(
+        'assets/whatsapp.png',
+        height: 60,
+        fit: BoxFit.contain, // Maintain aspect ratio
+      ),
+    );
+  }
+
+  Widget _buildOrderConfirmedRow() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        const Text(
+          "Order Confirmed!",
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
+        ),
+        const SizedBox(width: 8), // Added spacing between text and icon
+        Container(
+          alignment: Alignment.center,
+          height: 30,
+          width: 30,
+          decoration: BoxDecoration(
+            color: const Color(0xFF00d26a),
+            borderRadius: BorderRadius.circular(4),
+          ),
+          child: const Icon(
+            Icons.check,
+            color: Colors.white,
+            size: 20,
+          ),
+        ),
+      ],
+    );
+  }
 
   AppBar _buildAppBar() {
     return AppBar(
@@ -60,8 +143,7 @@ class WhatsappCard extends StatelessWidget {
       leading: IconButton(
         icon: const Icon(Icons.menu, color: Colors.white),
         onPressed: () {
-          _scaffoldKey.currentState
-              ?.openDrawer(); // Use global key to open drawer
+          _scaffoldKey.currentState?.openDrawer();
         },
       ),
       title: const Row(
