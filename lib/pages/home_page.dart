@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:kuber_steel/Widgets/app_drawer.dart';
+import 'package:kuber_steel/Widgets/app_top_bar.dart';
+import 'package:kuber_steel/pages/contact_us_page.dart';
 import 'package:kuber_steel/pages/customer_selection/customer_selection_screen.dart';
 
 import '../theme/app_theme.dart';
-import 'contact_us_page.dart';
+
+void main() {
+  runApp(MaterialApp(
+    home: HomePage(),
+  ));
+}
 
 class HomePage extends StatelessWidget {
-  final Function? onNotificationPressed;
+  final Function? onIconPressed;
 
-  HomePage({Key? key, this.onNotificationPressed}) : super(key: key);
+  HomePage({super.key, this.onIconPressed});
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -15,66 +23,18 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      // backgroundColor: AppColors.backgroundColor,
-      backgroundColor: Colors.white,
-      appBar: _buildAppBar(),
-      drawer: buildDrawer(context),
+      backgroundColor: AppTheme.scaffoldBackgroundColor,
+      appBar: CustomAppBar(
+        trailingIcon: Icons.person,
+        onIconPressed: onIconPressed,
+        scaffoldKey: _scaffoldKey,
+      ),
+      drawer: const AppDrawer(),
       body: _buildBody(context),
     );
   }
 
-  AppBar _buildAppBar() {
-    return AppBar(
-      elevation: 0,
-      backgroundColor: AppColors.primaryColor,
-      title: Row(
-        children: [
-          // Image.asset(
-          //   'assets/kuber_logo.png',
-          //   height: 40,
-          // ),
-          const SizedBox(width: 12),
-          const Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "KUBER STEEL",
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-              Text(
-                "INDUSTRIES",
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white70,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.person, color: Colors.white),
-          onPressed: () {
-            if (onNotificationPressed != null) {
-              onNotificationPressed!();
-            }
-          },
-        ),
-        const SizedBox(width: 8),
-      ],
-      leading: IconButton(
-        icon: const Icon(Icons.menu, color: Colors.white),
-        onPressed: () => _scaffoldKey.currentState?.openDrawer(),
-      ),
-    );
-  }
-
+  //Completed No changes needed
   Widget _buildBody(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
@@ -82,8 +42,8 @@ class HomePage extends StatelessWidget {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            AppColors.primaryColor.withOpacity(0.1),
-            AppColors.backgroundColor.withOpacity(0.7),
+            AppTheme.primaryColor.withOpacity(0.1),
+            AppTheme.backgroundColor.withOpacity(0.7),
           ],
         ),
       ),
@@ -92,7 +52,7 @@ class HomePage extends StatelessWidget {
           margin: const EdgeInsets.all(20),
           padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
-            color: AppColors.cardColor,
+            color: AppTheme.cardColor,
             borderRadius: BorderRadius.circular(15),
             boxShadow: [
               BoxShadow(
@@ -121,11 +81,11 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 12),
-              Text(
+              const Text(
                 'Your Trusted Partner in Steel Solutions',
                 style: TextStyle(
                   fontSize: 16,
-                  color: AppColors.subtleText,
+                  color: AppTheme.subtleText,
                 ),
               ),
               const SizedBox(height: 30),
@@ -148,7 +108,14 @@ class HomePage extends StatelessWidget {
         _buildQuickAccessButton(
             icon: Icons.support_agent_outlined,
             label: 'Support',
-            onClick: () {}),
+            onClick: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ContactUsScreen(),
+                ),
+              );
+            }),
         _buildQuickAccessButton(
             icon: Icons.person_search,
             label: 'Customers',
@@ -174,7 +141,7 @@ class HomePage extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: AppColors.fieldBg,
+            color: AppTheme.fieldBg,
             borderRadius: BorderRadius.circular(12),
           ),
           child: IconButton(
@@ -190,136 +157,11 @@ class HomePage extends StatelessWidget {
         Text(
           label,
           style: const TextStyle(
-            color: AppColors.subtleText,
+            color: AppTheme.subtleText,
             fontSize: 12,
           ),
         ),
       ],
-    );
-  }
-
-  Drawer buildDrawer(BuildContext context) {
-    return Drawer(
-      backgroundColor: AppColors.primaryColor,
-      child: Column(
-        children: [
-          SizedBox(height: 20),
-          _buildDrawerHeader(),
-          const Divider(),
-          const SizedBox(height: 8),
-          Expanded(
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: [
-                _buildDrawerItem(
-                  icon: Icons.home_outlined,
-                  title: 'Home',
-                  context: context,
-                  onTap: () => Navigator.pop(context),
-                ),
-                _buildDrawerItem(
-                  icon: Icons.inventory_2_outlined,
-                  title: 'Products',
-                  context: context,
-                  onTap: () {
-                    Navigator.pop(context);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Products coming soon'),
-                        backgroundColor: AppColors.accentColor,
-                      ),
-                    );
-                  },
-                ),
-                _buildDrawerItem(
-                  icon: Icons.support_agent_outlined,
-                  title: 'Contact Us',
-                  context: context,
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const ContactUsScreen(),
-                      ),
-                    );
-                  },
-                ),
-                const Divider(height: 32, color: Colors.white24),
-                _buildDrawerItem(
-                  icon: Icons.settings_outlined,
-                  title: 'Settings',
-                  context: context,
-                  onTap: () {},
-                ),
-              ],
-            ),
-          ),
-          _buildDrawerFooter(),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildDrawerHeader() {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(16, 48, 16, 16),
-      color: AppColors.primaryColor,
-      child: Row(
-        children: [
-          // Image.asset('assets/kuber_logo.png', height: 60),
-          const SizedBox(width: 12),
-          const Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "KUBER STEEL",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-              Text(
-                "INDUSTRIES",
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.white70,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildDrawerItem({
-    required IconData icon,
-    required String title,
-    required BuildContext context,
-    required VoidCallback onTap,
-  }) {
-    return ListTile(
-      leading: Icon(icon, color: Colors.white),
-      title: Text(
-        title,
-        style: const TextStyle(
-          fontSize: 16,
-          color: Colors.white,
-        ),
-      ),
-      onTap: onTap,
-    );
-  }
-
-  Widget _buildDrawerFooter() {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: const Text(
-        'App Version 1.0.0',
-        style: TextStyle(color: AppColors.subtleText),
-      ),
     );
   }
 }
