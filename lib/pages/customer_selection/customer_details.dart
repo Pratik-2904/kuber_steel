@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 
+import '../../models/customer_model.dart';
 import '../../theme/app_theme.dart';
 import '../contact_us_page.dart';
 import '../home_page.dart';
 
 class CustomerDetailsPage extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  final Customer customer;
+
+  CustomerDetailsPage({super.key, required this.customer});
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +49,8 @@ class CustomerDetailsPage extends StatelessWidget {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            AppColors.primaryColor.withOpacity(0),
-            AppColors.backgroundColor.withOpacity(0.7),
+            AppTheme.primaryColor.withOpacity(0),
+            AppTheme.backgroundColor.withOpacity(0.7),
           ],
         ),
       ),
@@ -114,7 +119,7 @@ class CustomerDetailsPage extends StatelessWidget {
   Widget _buildButton(
       String text, Color color, VoidCallback onPressed, IconData? icon) {
     return Expanded(
-      child: Container(
+      child: SizedBox(
         height: 30,
         child: ElevatedButton(
           onPressed: onPressed,
@@ -176,14 +181,14 @@ class CustomerDetailsPage extends StatelessWidget {
 
   Drawer buildDrawer(BuildContext context) {
     return Drawer(
-      backgroundColor: AppColors.primaryColor,
+      backgroundColor: AppTheme.primaryColor,
       child: Column(
         children: [
           _buildDrawerHeader(),
           const SizedBox(height: 8),
           Expanded(
             child: Container(
-              color: AppColors.cardColor,
+              color: AppTheme.cardColor,
               child: ListView(
                 padding: EdgeInsets.zero,
                 children: [
@@ -203,7 +208,7 @@ class CustomerDetailsPage extends StatelessWidget {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text('Products coming soon'),
-                          backgroundColor: AppColors.accentColor,
+                          backgroundColor: AppTheme.accentColor,
                         ),
                       );
                     },
@@ -245,7 +250,7 @@ class CustomerDetailsPage extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.fromLTRB(16, 48, 16, 16),
       decoration: const BoxDecoration(
-        color: AppColors.primaryColor,
+        color: AppTheme.primaryColor,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -295,7 +300,7 @@ class CustomerDetailsPage extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        color: title == 'Home' ? AppColors.fieldBg : Colors.transparent,
+        color: title == 'Home' ? AppTheme.fieldBg : Colors.transparent,
       ),
       child: ListTile(
         leading: Icon(icon, color: Colors.white),
@@ -321,7 +326,7 @@ class CustomerDetailsPage extends StatelessWidget {
   Widget _buildDrawerFooter() {
     return Container(
       padding: const EdgeInsets.all(16),
-      color: AppColors.cardColor,
+      color: AppTheme.cardColor,
       child: const Column(
         children: [
           Divider(color: Colors.white24),
@@ -332,7 +337,7 @@ class CustomerDetailsPage extends StatelessWidget {
               Text(
                 'App Version 1.0.0',
                 style: TextStyle(
-                  color: AppColors.subtleText,
+                  color: AppTheme.subtleText,
                   fontSize: 12,
                 ),
               ),
