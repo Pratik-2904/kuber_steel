@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 
 import '../pages/contact_us_page.dart';
-import '../pages/home_page.dart';
 import '../theme/app_theme.dart';
 
 class AppDrawer extends StatelessWidget {
-  const AppDrawer({Key? key}) : super(key: key);
+  const AppDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: AppColors.primaryColor,
+      backgroundColor: AppTheme.cardColor,
       child: Column(
         children: [
+          const SizedBox(height: 20),
           _buildDrawerHeader(),
+          const Divider(),
           const SizedBox(height: 8),
           Expanded(
             child: ListView(
@@ -23,10 +24,19 @@ class AppDrawer extends StatelessWidget {
                   icon: Icons.home_outlined,
                   title: 'Home',
                   context: context,
+                  onTap: () => Navigator.pop(context),
+                ),
+                _buildDrawerItem(
+                  icon: Icons.inventory_2_outlined,
+                  title: 'Products',
+                  context: context,
                   onTap: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => HomePage()),
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Products coming soon'),
+                        backgroundColor: AppTheme.accentColor,
+                      ),
                     );
                   },
                 ),
@@ -35,10 +45,12 @@ class AppDrawer extends StatelessWidget {
                   title: 'Contact Us',
                   context: context,
                   onTap: () {
-                    Navigator.pushReplacement(
+                    Navigator.pop(context);
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const ContactUsScreen()),
+                        builder: (context) => const ContactUsScreen(),
+                      ),
                     );
                   },
                 ),
@@ -47,13 +59,7 @@ class AppDrawer extends StatelessWidget {
                   icon: Icons.settings_outlined,
                   title: 'Settings',
                   context: context,
-                  onTap: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Settings coming soon!'),
-                      ),
-                    );
-                  },
+                  onTap: () {},
                 ),
               ],
             ),
@@ -67,12 +73,11 @@ class AppDrawer extends StatelessWidget {
   Widget _buildDrawerHeader() {
     return Container(
       padding: const EdgeInsets.fromLTRB(16, 48, 16, 16),
-      color: AppColors.primaryColor,
-      child: Row(
+      color: AppTheme.cardColor,
+      child: const Row(
         children: [
-          Image.asset('assets/kuber_logo.png', height: 60),
-          const SizedBox(width: 12),
-          const Column(
+          SizedBox(width: 12),
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
@@ -117,11 +122,11 @@ class AppDrawer extends StatelessWidget {
   }
 
   Widget _buildDrawerFooter() {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: const Text(
+    return const Padding(
+      padding: EdgeInsets.all(16),
+      child: Text(
         'App Version 1.0.0',
-        style: TextStyle(color: AppColors.subtleText),
+        style: TextStyle(color: AppTheme.subtleText),
       ),
     );
   }
